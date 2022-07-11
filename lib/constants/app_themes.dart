@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:recolo/constants/app_colors.dart';
 
 class AppThemes {
-  static final ThemeData darkTheme = ThemeData(
+  static final ThemeData darkTheme = ThemeData.dark().copyWith(
     bottomAppBarColor: AppColors.primaryColor,
     iconTheme: IconThemeData(
       color: AppColors.interactableColor.shade300,
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: AppColors.interactableColor,
-    ),
-    primarySwatch: AppColors.primaryColor,
+        backgroundColor: AppColors.interactableColor,
+        foregroundColor: Colors.white),
+    appBarTheme: AppBarTheme(color: AppColors.primaryColor),
+    primaryColor: AppColors.primaryColor,
+    //primarySwatch: AppColors.primaryColor,
     scaffoldBackgroundColor: AppColors.backgroundColor,
     textTheme: Typography.whiteCupertino,
     textSelectionTheme:
@@ -35,7 +37,6 @@ class AppThemes {
         ),
       ),
     ),
-    primaryColorBrightness: Brightness.dark,
     inputDecorationTheme: InputDecorationTheme(
         fillColor: AppColors.outlineColor,
         focusColor: AppColors.outlineColor,
@@ -49,8 +50,9 @@ class AppThemes {
         ),
         labelStyle: Typography.whiteCupertino.bodyText1),
     textButtonTheme: TextButtonThemeData(
-      style:
-          TextButton.styleFrom(primary: AppColors.interactableColor.shade300),
+      style: TextButton.styleFrom(
+          primary: AppColors.interactableColor.shade300,
+          textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
     ),
   );
 }

@@ -10,7 +10,10 @@ class LoadingJournals extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    Color backgroundColor = Theme.of(context).scaffoldBackgroundColor;
+    return ListView.separated(
+      separatorBuilder: (context, index) => Container(
+          height: 2, decoration: BoxDecoration(color: backgroundColor)),
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) => const LoadingJournalEntry(),

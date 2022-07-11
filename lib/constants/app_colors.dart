@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._();
 
-  static final MaterialColor primaryColor = _materialColorFromHex(0xff021859);
+  static final MaterialColor primaryColor = _materialColorFromHex(0xff1c2754);
 
-  static const backgroundColor = Color(0xff010B40);
+  static const backgroundColor = Color(0xff131c3c);
 
-  static final interactableColor = Colors.deepPurple;
+  static final interactableColor = _materialColorFromHex(0xff3658d8);
 
   static const fadedText = Colors.white38;
 

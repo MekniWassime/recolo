@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recolo/constants/app_colors.dart';
 import 'package:recolo/models/journal_item.dart';
 import 'package:recolo/models/journal_metadata.dart';
 import 'package:recolo/modules/journal/notifiers/journal_notifier.dart';
@@ -40,6 +41,7 @@ class _JournalScreenState extends State<JournalScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Color backgroundColor = Theme.of(context).scaffoldBackgroundColor;
     return JournalScreenScaffhold(
       onGoToTopButtonPressed: scrollToTopWithAdaptiveSpeed,
       goToTopVisibilityController: goToTopVIsibilityController,
@@ -52,7 +54,10 @@ class _JournalScreenState extends State<JournalScreen> {
         var itemcount = value.items.length + 1;
         return RefreshIndicator(
           onRefresh: journalNotifier.refresh,
-          child: ListView.builder(
+          child: ListView.separated(
+            separatorBuilder: (context, index) => Container(
+                height: 2, decoration: BoxDecoration(color: backgroundColor)),
+            padding: EdgeInsets.only(top: 3),
             controller: scrollController,
             itemBuilder: (context, index) {
               if (index == value.items.length) {
@@ -99,7 +104,8 @@ class _JournalScreenState extends State<JournalScreen> {
       showDialog(
         context: context,
         builder: (context) => const AlertDialog(
-          title: Text("Wrong password"),
+          titlePadding: EdgeInsets.symmetric(vertical: 20),
+          title: Center(child: Text("Wrong password")),
         ),
       );
     });

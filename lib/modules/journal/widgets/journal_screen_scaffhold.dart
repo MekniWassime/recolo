@@ -17,10 +17,20 @@ class JournalScreenScaffhold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color primaryColor = Theme.of(context).primaryColor;
     return Scaffold(
       appBar: MainAppBar(title: "Recolo"),
       body: SafeArea(
-        child: body,
+        child: DecoratedBox(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [
+              primaryColor.withOpacity(0),
+              primaryColor.withOpacity(0.9),
+              primaryColor.withOpacity(0),
+              primaryColor.withOpacity(0.5),
+              primaryColor.withOpacity(0),
+            ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
+            child: body),
       ),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
