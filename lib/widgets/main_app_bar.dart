@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:recolo/modules/journal/notifiers/journal_notifier.dart';
 import 'package:recolo/services/file_service.dart';
 import 'package:recolo/services/journal_service.dart';
 
 class MainAppBar extends PreferredSize {
   MainAppBar({
+    required BuildContext context,
     Key? key,
     required String title,
   }) : super(
@@ -26,14 +29,22 @@ class MainAppBar extends PreferredSize {
                     style: TextStyle(fontSize: 25),
                   ),
                 ]),
-            // actions: [
-            //   TextButton(
-            //       onPressed: () => FileService.instance.deleteAll(),
-            //       child: const Text("Delete all")),
-            //   TextButton(
-            //       onPressed: () => JournalService.addPlaceholderFiles(),
-            //       child: const Text("Gen Files")),
-            // ],
+            actions: [
+              TextButton(
+                  onPressed: () =>
+                      FileService.instance.deleteAll().then((value) {
+                        Provider.of<JournalNotifier>(context, listen: false)
+                            .refresh();
+                      }),
+                  child: const Text("Delete all")),
+              TextButton(
+                  onPressed: () =>
+                      JournalService.addPlaceholderFiles().then((value) {
+                        Provider.of<JournalNotifier>(context, listen: false)
+                            .refresh();
+                      }),
+                  child: const Text("Gen Files")),
+            ],
           ),
         );
 }

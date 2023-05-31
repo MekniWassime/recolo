@@ -19,7 +19,10 @@ class JournalScreenScaffhold extends StatelessWidget {
   Widget build(BuildContext context) {
     Color primaryColor = Theme.of(context).primaryColor;
     return Scaffold(
-      appBar: MainAppBar(title: "Recolo"),
+      appBar: MainAppBar(
+        title: "Recolo",
+        context: context,
+      ),
       body: SafeArea(
         child: DecoratedBox(
             decoration: BoxDecoration(
