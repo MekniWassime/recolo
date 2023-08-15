@@ -24,7 +24,7 @@ class EditorAppBar extends AppBar {
                     focusNode: focusNode,
                     cursorColor:
                         Theme.of(context).inputDecorationTheme.fillColor!,
-                    style: Theme.of(context).textTheme.headline6 ??
+                    style: Theme.of(context).textTheme.titleLarge ??
                         const TextStyle(),
                   ),
                   flex: 2,

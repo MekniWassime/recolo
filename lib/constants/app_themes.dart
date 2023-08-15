@@ -3,7 +3,6 @@ import 'package:recolo/constants/app_colors.dart';
 
 class AppThemes {
   static final ThemeData darkTheme = ThemeData.dark().copyWith(
-    bottomAppBarColor: AppColors.primaryColor,
     iconTheme: IconThemeData(
       color: AppColors.interactableColor.shade300,
     ),
@@ -27,7 +26,7 @@ class AppThemes {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        primary: AppColors.interactableColor,
+        backgroundColor: AppColors.interactableColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
@@ -48,11 +47,10 @@ class AppThemes {
           borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(color: AppColors.fadedText),
         ),
-        labelStyle: Typography.whiteCupertino.bodyText1),
+        labelStyle: Typography.whiteCupertino.bodyLarge),
     textButtonTheme: TextButtonThemeData(
       style: TextButton.styleFrom(
-          primary: AppColors.interactableColor.shade300,
-          textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-    ),
+          foregroundColor: AppColors.interactableColor.shade300, textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+    ), bottomAppBarTheme: BottomAppBarTheme(color: AppColors.primaryColor),
   );
 }

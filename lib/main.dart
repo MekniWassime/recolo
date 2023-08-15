@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recolo/constants/app_colors.dart';
 import 'package:recolo/constants/app_themes.dart';
+import 'package:recolo/modules/grid_view/screens/grid_view_screen.dart';
 import 'package:recolo/modules/journal/notifiers/journal_notifier.dart';
-import 'package:recolo/modules/journal/screens/journal_screen.dart';
 import 'package:recolo/splash_screen_app.dart';
 
 void main() {
@@ -29,7 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Recolo',
       theme: AppThemes.darkTheme,
-      home: const JournalScreen(),
+      home: const GridViewScreen(),
     );
   }
 }

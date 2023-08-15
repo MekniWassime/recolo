@@ -18,7 +18,7 @@ class EmptyJournalList extends StatelessWidget {
         children: [
           Text(
             "Looks like you haven't written any journals yet!",
-            style: Theme.of(context).textTheme.headline6,
+            style: Theme.of(context).textTheme.titleLarge,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 40),
@@ -26,7 +26,7 @@ class EmptyJournalList extends StatelessWidget {
               onPressed: onCreateButtonPressed,
               child: Text(
                 "Create one for today",
-                style: Theme.of(context).textTheme.headline6,
+                style: Theme.of(context).textTheme.titleLarge,
               )),
         ],
       ),

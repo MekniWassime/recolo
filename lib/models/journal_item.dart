@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:encrypt/encrypt.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:flutter/foundation.dart';
 import 'package:recolo/constants/verify.dart';
 import 'package:recolo/models/journal_metadata.dart';
 import 'package:recolo/utility/encryption_utility.dart';
@@ -9,7 +10,7 @@ import 'package:recolo/utility/encryption_utility.dart';
 class JournalItem {
   final JournalMetadata metadata;
   final String data;
-  final Key key;
+  final encrypt.Key key;
   final int version = 1;
 
   JournalItem({
@@ -67,6 +68,7 @@ class JournalItem {
     final jsonFileContent = jsonDecode(await file.readAsString());
     final key = EncryptionUtility.getKeyFromPassword(password);
     final date = DateTime.parse(jsonFileContent['date']);
+    debugPrint(jsonFileContent.toString());
 
     var encVerifString = EncryptionUtility.decrypt(
       key: key,

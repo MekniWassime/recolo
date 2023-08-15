@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:recolo/constants/app_colors.dart';
 
 void deleteConfirmAlert({
   required BuildContext context,

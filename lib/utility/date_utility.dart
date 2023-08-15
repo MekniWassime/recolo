@@ -24,4 +24,14 @@ class DateUtility {
   static String toEEEEMMMyyyy(DateTime date) {
     return EEEEMMMyyyyFormatter.format(date);
   }
+
+  static Iterable<DateTime> daysOfMonth(DateTime monthAsDateTime) sync* {
+    var counter = DateTime(monthAsDateTime.year, monthAsDateTime.month);
+    var month = monthAsDateTime.month;
+    do {
+      yield counter;
+      counter = DateTime(counter.year, counter.month, counter.day + 1);
+    } while (counter.month == month);
+    return;
+  }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:recolo/widgets/main_app_bar.dart';
 
 class MyScaffhold extends StatelessWidget {
   const MyScaffhold({

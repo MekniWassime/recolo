@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:recolo/constants/app_colors.dart';
 import 'package:recolo/models/journal_item.dart';
 import 'package:recolo/models/journal_metadata.dart';
 import 'package:recolo/modules/journal/notifiers/journal_notifier.dart';
@@ -81,7 +80,6 @@ class _JournalScreenState extends State<JournalScreen> {
               );
             },
             itemCount: itemcount,
-            shrinkWrap: true,
           ),
         );
       }),
