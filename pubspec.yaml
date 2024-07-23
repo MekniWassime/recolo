@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: '>=3.4.1 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -39,11 +39,15 @@ dependencies:
   intl: ^0.17.0
   encrypt: ^5.0.1
   shimmer: ^2.0.0
+  crypto: ^3.0.3
+  secure_dotenv: ^1.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.9.3
+  build_runner: ^2.4.11
+  secure_dotenv_generator: ^1.0.1
 
 flutter_icons:
   android: true

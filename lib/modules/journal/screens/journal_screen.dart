@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:math';
 
+import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recolo/models/journal_item.dart';
@@ -116,11 +118,8 @@ class _JournalScreenState extends State<JournalScreen> {
     if (fileExists) {
       readDataFromFile(newMetaData, password);
     } else {
-      var item = JournalItem(
-        metadata: newMetaData,
-        data: "",
-        password: password,
-      );
+      final key = encrypt.Key(utf8.encode(password));
+      final item = JournalItem.empty(metadata: newMetaData, key: key);
       await journalNotifier.createItem(item);
       NavigationUtility.of(context).pushScreen(JournalEditScreen(item: item));
     }

@@ -31,8 +31,8 @@ class _JournalEditScreenState extends State<JournalEditScreen> {
   @override
   void initState() {
     currentItem = widget.item;
-    String title = currentItem.title;
-    ratingController = ValueNotifier(currentItem.rating);
+    String title = currentItem.metadata.title;
+    ratingController = ValueNotifier(currentItem.metadata.rating);
     titleController =
         TextEditingController(text: title.isEmpty ? "Enter Title" : title);
     textController = TextEditingController(text: currentItem.data);
@@ -57,7 +57,7 @@ class _JournalEditScreenState extends State<JournalEditScreen> {
           textController: titleController,
           focusNode: titleFocusNode,
           ratingController: ratingController,
-          subTitle: DateUtility.toddMMyyyy(currentItem.date),
+          subTitle: DateUtility.toddMMyyyy(currentItem.metadata.date),
         ),
         body: TextField(
           controller: textController,
@@ -113,8 +113,8 @@ class _JournalEditScreenState extends State<JournalEditScreen> {
   }
 
   bool didChange() {
-    return getTitle(titleController.text) != currentItem.title ||
-        ratingController.value != currentItem.rating ||
+    return getTitle(titleController.text) != currentItem.metadata.title ||
+        ratingController.value != currentItem.metadata.rating ||
         textController.text != currentItem.data;
   }
 

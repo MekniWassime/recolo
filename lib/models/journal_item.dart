@@ -2,51 +2,34 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:encrypt/encrypt.dart' as encrypt;
-import 'package:flutter/foundation.dart';
-import 'package:recolo/constants/verify.dart';
+import 'package:recolo/constants/app_config.dart';
+import 'package:recolo/models/journal_headers.dart';
 import 'package:recolo/models/journal_metadata.dart';
+import 'package:recolo/models/raw_journal_file.dart';
 import 'package:recolo/utility/encryption_utility.dart';
 
 class JournalItem {
   final JournalMetadata metadata;
+  final JournalHeaders headers;
   final String data;
   final encrypt.Key key;
   final int version = 1;
 
+  get fileName => "${metadata.date.millisecondsSinceEpoch}.json";
+
   JournalItem({
     required this.metadata,
-    required this.data,
-    required String password,
-  }) : key = EncryptionUtility.getKeyFromPassword(password);
-
-  JournalItem.withKey({
-    required this.metadata,
+    required this.headers,
     required this.data,
     required this.key,
   });
 
-  String get fileName => metadata.fileName;
-  String get title => metadata.title;
-  int get rating => metadata.rating;
-  DateTime get date => metadata.date;
+  // UTILITY //
 
-  String toJsonString() {
-    var object = {
-      "fileName": metadata.fileName,
-      "date": metadata.date.toIso8601String(),
-      "rating": metadata.rating,
-      "title": metadata.title,
-      "encodedData": EncryptionUtility.encrypt(
-        key: key,
-        data: data,
-      ),
-      "encVerify": EncryptionUtility.encrypt(
-        key: key,
-        data: getVerifString(metadata.date),
-      ),
-      "version": version
-    };
-    return jsonEncode(object);
+  static Future<JournalItem> fromFile(File file, String password) async {
+    final jsonFileContent = jsonDecode(await file.readAsString());
+    final raw = RawJournalFile.fromJson(jsonFileContent);
+    return JournalItem.fromRaw(raw: raw, key: EncryptionUtility.kdf(password));
   }
 
   JournalItem copyWith({
@@ -54,8 +37,10 @@ class JournalItem {
     String? newTitle,
     int? newRating,
   }) {
-    return JournalItem.withKey(
+    final iv = encrypt.IV.fromLength(AppConfig.IV_LENGTH);
+    return JournalItem(
       key: key,
+      headers: headers.copyWith(iv: iv),
       data: newData ?? data,
       metadata: metadata.copyWith(
         newTitle: newTitle,
@@ -64,30 +49,50 @@ class JournalItem {
     );
   }
 
-  static Future<JournalItem> fromFile(File file, String password) async {
-    final jsonFileContent = jsonDecode(await file.readAsString());
-    final key = EncryptionUtility.getKeyFromPassword(password);
-    final date = DateTime.parse(jsonFileContent['date']);
-    debugPrint(jsonFileContent.toString());
-
-    var encVerifString = EncryptionUtility.decrypt(
-      key: key,
-      cipher: jsonFileContent['encVerify'],
-    );
-    if (encVerifString != getVerifString(date)) {
-      throw WrongDecryptionKeyException("icorrect password or corrupted data");
-    }
+  factory JournalItem.empty({
+    required JournalMetadata metadata,
+    required encrypt.Key key,
+  }) {
     return JournalItem(
-      data: EncryptionUtility.decrypt(
+      metadata: metadata,
+      headers: JournalHeaders.empty(),
+      data: "",
+      key: key,
+    );
+  }
+
+  // SERIALIZATION //
+
+  RawJournalFile toRaw() {
+    final hash = EncryptionUtility.hash(data: data);
+    final encryptedData = EncryptionUtility.encrypt(
+        data: data,
         key: key,
-        cipher: jsonFileContent["encodedData"],
-      ),
-      metadata: JournalMetadata(
-        rating: jsonFileContent['rating'],
-        date: date,
-        title: jsonFileContent['title'],
-      ),
-      password: password,
+        mode: headers.encryptionAlgorithm,
+        iv: headers.iv);
+    return RawJournalFile(
+      rawHeaders: headers.toRaw(hash: hash, key: key),
+      encryptedData: encryptedData,
+      metadata: metadata,
+    );
+  }
+
+  factory JournalItem.fromRaw(
+      {required RawJournalFile raw, required encrypt.Key key}) {
+    final data = EncryptionUtility.decrypt(
+        cipher: raw.encryptedData,
+        key: key,
+        mode: raw.rawHeaders.encryptionAlgorithm,
+        iv: raw.rawHeaders.iv);
+    final headers = JournalHeaders.fromRaw(raw: raw.rawHeaders, key: key);
+    final dataHash = EncryptionUtility.hash(data: data);
+    if (headers.hash != dataHash)
+      throw WrongDecryptionKeyException("hash does not match");
+    return JournalItem(
+      metadata: raw.metadata,
+      headers: headers,
+      data: data,
+      key: key,
     );
   }
 }

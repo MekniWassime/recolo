@@ -1,11 +1,14 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
+import 'package:recolo/models/journal_headers.dart';
 import 'package:recolo/models/journal_item.dart';
 import 'package:recolo/models/journal_metadata.dart';
 
 import 'package:recolo/services/file_service.dart';
 import 'package:recolo/utility/date_utility.dart';
+import 'package:recolo/utility/encryption_utility.dart';
 
 class JournalService {
   int pageSize = 30;
@@ -55,7 +58,7 @@ class JournalService {
   static Future<bool> save(JournalItem item) async {
     try {
       await FileService.instance
-          .writeToFile(item.fileName, item.toJsonString());
+          .writeToFile(item.fileName, jsonEncode(item.toRaw().toJson()));
       return true;
     } catch (e, stackTrace) {
       debugPrint(e.toString());
@@ -70,7 +73,8 @@ class JournalService {
     for (var i = 0; i < numberOfFileToAdd; i++) {
       var shifted = today.subtract(Duration(days: i));
       var item = JournalItem(
-        password: "wassime",
+        key: EncryptionUtility.kdf("wassime"),
+        headers: JournalHeaders.empty(),
         data: "Top secret secrets",
         metadata: JournalMetadata(
           date: shifted,
@@ -79,7 +83,7 @@ class JournalService {
         ),
       );
       await FileService.instance
-          .writeToFile(item.fileName, item.toJsonString());
+          .writeToFile(item.fileName, jsonEncode(item.toRaw().toJson()));
     }
     debugPrint("added $numberOfFileToAdd files");
   }

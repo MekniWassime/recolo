@@ -4,25 +4,23 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class JournalMetadata {
-  final String fileName;
   final int rating; //-2, -1, 0, 1, 2
   final DateTime date;
   final String title;
+
+  get fileName => "${date.millisecondsSinceEpoch}.json";
 
   JournalMetadata({
     required this.date,
     this.rating = 0,
     this.title = "",
-  })  : fileName = "${date.millisecondsSinceEpoch}.json",
-        assert(rating >= -2 && rating <= 2, "value $rating is invalid");
+  }) : assert(rating >= -2 && rating <= 2, "value $rating is invalid");
+
+  // UTILITY //
 
   static Future<JournalMetadata> fromFile(File file) async {
     final jsonFileContent = jsonDecode(await file.readAsString());
-    return JournalMetadata(
-      rating: jsonFileContent['rating'],
-      date: DateTime.parse(jsonFileContent['date']),
-      title: jsonFileContent['title'],
-    );
+    return JournalMetadata.fromJson(jsonFileContent["metadata"]);
   }
 
   JournalMetadata copyWith({String? newTitle, int? newRating}) {
@@ -32,6 +30,22 @@ class JournalMetadata {
       title: newTitle ?? title,
     );
   }
+
+  // SERIALIZATION //
+
+  dynamic toJson() => {
+        "rating": rating,
+        "date": date.toIso8601String(),
+        "title": title,
+      };
+
+  factory JournalMetadata.fromJson(dynamic json) => JournalMetadata(
+        rating: json['rating'],
+        date: DateTime.parse(json['date']),
+        title: json['title'],
+      );
+
+  // MISC //
 
   static const ratingIconMap = {
     -2: Icons.sentiment_very_dissatisfied,
