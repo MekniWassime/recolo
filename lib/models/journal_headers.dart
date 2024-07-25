@@ -39,8 +39,8 @@ class JournalHeaders {
 
   RawJournalHeaders toRaw({required String hash, required Key key}) {
     final encryptedHash = EncryptionUtility.encrypt(
+      hash,
       key: key,
-      data: hash,
       iv: iv,
       mode: encryptionAlgorithm,
     );
@@ -55,10 +55,10 @@ class JournalHeaders {
   factory JournalHeaders.fromRaw(
       {required RawJournalHeaders raw, required Key key}) {
     final hash = EncryptionUtility.decrypt(
+      raw.encryptedHash,
       key: key,
       iv: raw.iv,
       mode: raw.encryptionAlgorithm,
-      cipher: raw.encryptedHash,
     );
     return JournalHeaders(
       hash: hash,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:recolo/constants/app_colors.dart';
 import 'package:recolo/services/file_service.dart';
 
@@ -21,6 +22,7 @@ class _SplashScreenAppState extends State<SplashScreenApp> {
   }
 
   Future _initializeServices() async {
+    await dotenv.load(fileName: ".env");
     await FileService.initService();
     widget._initializationDoneCallback();
   }

@@ -40,14 +40,12 @@ dependencies:
   encrypt: ^5.0.1
   shimmer: ^2.0.0
   crypto: ^3.0.3
-  secure_dotenv: ^1.0.0
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.9.3
-  build_runner: ^2.4.11
-  secure_dotenv_generator: ^1.0.1
 
 flutter_icons:
   android: true
@@ -76,6 +74,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - .env
     - assets/recolo-logo-trimmed.png
   #   - images/a_dot_ham.jpeg
 

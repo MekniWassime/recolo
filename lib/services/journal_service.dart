@@ -57,8 +57,8 @@ class JournalService {
 
   static Future<bool> save(JournalItem item) async {
     try {
-      await FileService.instance
-          .writeToFile(item.fileName, jsonEncode(item.toRaw().toJson()));
+      await FileService.instance.writeToFile(
+          item.metadata.fileName, jsonEncode(item.toRaw().toJson()));
       return true;
     } catch (e, stackTrace) {
       debugPrint(e.toString());
@@ -82,8 +82,8 @@ class JournalService {
           title: Random().nextBool() ? "password: wassime" : "",
         ),
       );
-      await FileService.instance
-          .writeToFile(item.fileName, jsonEncode(item.toRaw().toJson()));
+      await FileService.instance.writeToFile(
+          item.metadata.fileName, jsonEncode(item.toRaw().toJson()));
     }
     debugPrint("added $numberOfFileToAdd files");
   }

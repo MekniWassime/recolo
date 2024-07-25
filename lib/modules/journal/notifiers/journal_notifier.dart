@@ -64,7 +64,7 @@ class JournalNotifier extends ChangeNotifier {
       debugPrint("changes saved");
       bool exists = false;
       for (var i = 0; i < _items.length; i++) {
-        if (_items[i].fileName == item.fileName) {
+        if (_items[i].fileName == item.metadata.fileName) {
           _items.replaceRange(i, i + 1, [item.metadata]);
           exists = true;
           break;

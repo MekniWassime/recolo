@@ -15,8 +15,6 @@ class JournalItem {
   final encrypt.Key key;
   final int version = 1;
 
-  get fileName => "${metadata.date.millisecondsSinceEpoch}.json";
-
   JournalItem({
     required this.metadata,
     required this.headers,
@@ -64,12 +62,9 @@ class JournalItem {
   // SERIALIZATION //
 
   RawJournalFile toRaw() {
-    final hash = EncryptionUtility.hash(data: data);
-    final encryptedData = EncryptionUtility.encrypt(
-        data: data,
-        key: key,
-        mode: headers.encryptionAlgorithm,
-        iv: headers.iv);
+    final hash = EncryptionUtility.hashBase64(data);
+    final encryptedData = EncryptionUtility.encrypt(data,
+        key: key, mode: headers.encryptionAlgorithm, iv: headers.iv);
     return RawJournalFile(
       rawHeaders: headers.toRaw(hash: hash, key: key),
       encryptedData: encryptedData,
@@ -79,13 +74,12 @@ class JournalItem {
 
   factory JournalItem.fromRaw(
       {required RawJournalFile raw, required encrypt.Key key}) {
-    final data = EncryptionUtility.decrypt(
-        cipher: raw.encryptedData,
+    final data = EncryptionUtility.decrypt(raw.encryptedData,
         key: key,
         mode: raw.rawHeaders.encryptionAlgorithm,
         iv: raw.rawHeaders.iv);
     final headers = JournalHeaders.fromRaw(raw: raw.rawHeaders, key: key);
-    final dataHash = EncryptionUtility.hash(data: data);
+    final dataHash = EncryptionUtility.hashBase64(data);
     if (headers.hash != dataHash)
       throw WrongDecryptionKeyException("hash does not match");
     return JournalItem(

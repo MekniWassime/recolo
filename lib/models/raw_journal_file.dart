@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:recolo/models/journal_metadata.dart';
 import 'package:recolo/models/raw_journal_headers.dart';
 
